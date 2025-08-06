@@ -25,6 +25,9 @@ echo "3. Build docker image"
 vagrant ssh -c "cd ${PROJECT_DIR} && docker build -t flask-demo ."
 
 echo ""
-echo "4. Run and test"
-vagrant ssh -c "cd ${PROJECT_DIR} && docker run flask-demo"
-vagrant ssh -c "cd ${PROJECT_DIR} && curl://localhost:5000"
+echo "4. Import docker image to k3s"
+vagrant ssh -c "cd ${PROJECT_DIR} && docker save flask-demo | sudo k3s ctr images import -"
+
+echo ""
+echo "5. Restart deployment and wait till it finishes"
+vagrant ssh -c "cd ${PROJECT_DIR} && sudo k3s kubectl apply -f k8s-deploy.yaml"
