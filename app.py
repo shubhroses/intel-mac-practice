@@ -28,11 +28,22 @@ def health_check():
    logging.info(f"Health check status: Healthy")
    return jsonify(health_data)
 
+@app.route("/ready")
+def readiness_check():
+   """Readiness checkpoint to determine if app is ready for traffic"""
+   if time.time() - startup_time > 5:
+      logging.info("Readiness status: READY")
+      return jsonify({"status": "ready"}), 200
+   else:
+      logging.warning("Readiness status: NOT READY")
+      return jsonify({"status": "not ready"}), 503     
 
 @app.route("/")
 def hello():
+   logging.info("Default endpoint reached")
    return "Hello from flask in k3s inside of Vagrant"
 
 if __name__ == "__main__":
+   logging.info("Main application is starting...")
    app.run(host="0.0.0.0", port=5000, debug=False)
 
