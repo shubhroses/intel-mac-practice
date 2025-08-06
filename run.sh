@@ -31,3 +31,9 @@ vagrant ssh -c "cd ${PROJECT_DIR} && docker save flask-demo | sudo k3s ctr image
 echo ""
 echo "5. Restart deployment and wait till it finishes"
 vagrant ssh -c "cd ${PROJECT_DIR} && sudo k3s kubectl apply -f k8s-deploy.yaml"
+vagrant ssh -c "cd ${PROJECT_DIR} && sudo k3s kubectl rollout restart deployment/flask-demo"
+vagrant ssh -c "cd ${PROJECT_DIR} && sudo k3s kubectl rollout status deployment/flask-demo --timeout 60s"
+
+echo ""
+echo "6. Test service"
+vagrant ssh -c "curl http://localhost:3007"
