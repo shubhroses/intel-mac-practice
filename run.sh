@@ -37,3 +37,4 @@ vagrant ssh -c "cd ${PROJECT_DIR} && sudo k3s kubectl rollout status deployment/
 echo ""
 echo "6. Test service"
 vagrant ssh -c "curl http://localhost:30007"
+vagrant ssh -c "curl http://localhost:30007/health"
